@@ -44,7 +44,7 @@ var myPagesPrint="";
 		var ck= ckWord.toUpperCase();
 		var ck= ckWord;
 		//console.println(this.getPageNthWord(0, j));
-			if ( ckWord == "UCB")
+			if ( ckWord == "PharmaCompany")
 			{
 			k=j;
 			//console.println("k=" + k);
