@@ -1,0 +1,104 @@
+function RemovePDFTypeFromBookmarks() {
+ /*
+Based on the original code from http://www.planetpdf.com/developer/article.asp?ContentID=RemovingfilenamebookmarkscreatedbyAcrobat&gid=6881
+Author: Sean Stewart, ARTS PDF
+Date: 2 June 2004
+Description: When you merge documents using Acrobat's merge process
+it creates a high-level bookmark with the filename of the merged document and
+subordinates all bookmarks from the merged document below this.
+
+This script can be used to:
+1) moves all subordinated bookmarks up the bookmark tree; and
+2) delete the filename bookmark
+
+Code has been adapted to be used with Acrobat XI
+ */
+
+   // check for open document - gtk
+   if(event.target == null) {
+   app.alert('There is not open document to process', 1, 0);
+   return; // exit further processing
+   }
+
+var bm = this.bookmarkRoot;
+this.pane = "nobookmarks";
+if(this.bookmarkRoot.children != null) {
+
+try {
+//create array to hold filename bookmarks;
+var bmToDeleteArray = [];
+
+//create array to hold child bookmarks created by SAS;
+var subBmToDeleteArray = [];
+
+// Iterate through each bookmark
+var ibmLength = bm.children.length;
+//console.println("Bookmark Number to delete: " + ibmLength);
+for (var i = 0; i < ibmLength; i++)
+{
+    // Check this is a bookmark which contains sub-ordinate bookmarks
+    var bmToCheck = bm.children[i];
+	
+     if((bm.children[i].children!=null))
+    {
+    //console.println("Bookmark to save: " + bm.children[i].children[0]);
+	   //remove child bookmarks before moving parent;
+	   //using the .remove() method of the bookmark object makes Acrobat XI crash when closed 
+	   //therefore child bookmarks are removed using an array instead of bookmark object;
+	   
+		   if(bm.children[i].children[0].children!=null)
+		   {
+			   //count child bookmars;
+			   var mycount=bm.children[i].children[0].children.length;
+			   //create array with bookmark objects;
+			   for(var k=0; k<mycount; k++)
+				{
+				subBmToDeleteArray[k]=bm.children[i].children[0].children[k];
+			//	console.println("Bookmark to delete: " + bm.children[i].children[0].children[k]);
+				}
+			   //delete bookmarks objects using array as pointer to bookmark object;
+			   //maybe not the correct explanation, but using the bookmark object itself with .remove() makes Acrobat XI crash if document is closed;
+				for(var k=0; k<mycount; k++)
+				{
+				subBmToDeleteArray[k].remove();
+				}
+			}
+		//Now that child bookmarks are deleted, move table bookmark to end of tree;	
+       
+        bm.insertChild(bmToCheck.children[0], bm.children.length);
+      // console.println("Current index to add: " + bmToDeleteArray.length);
+        // Add parent bookmark (filename bookmark) to another array of bookmarks to be deleted later;
+        bmToDeleteArray[bmToDeleteArray.length] = bmToCheck;
+    }
+}
+
+
+// Iterate through the array of 'filename' bookmarks to delete
+// and delete them
+//console.println("Bookmark Number to delete: " + bmToDeleteArray.length);
+for (var i = 0; i < bmToDeleteArray.length; i++)
+{
+// Delete bookmark
+	//console.println("Bookmark finally to delete: " + bmToDeleteArray[i]);
+   bmToDeleteArray[i].remove();
+}
+	delete bmToDeleteArray;
+	delete subBmToDeleteArray;
+
+}
+
+finally {
+// console.hide();
+this.pane = "bookmarks";
+} // end try
+}; // end this.bookmarkRoot.children != null
+return;
+
+}
+
+
+app.addMenuItem( { cName: "Clean Bookmarks",
+cParent: "File",
+cExec: "RemovePDFTypeFromBookmarks()",
+cEnable: "event.rc = event.target != null",
+nPos: 0});
