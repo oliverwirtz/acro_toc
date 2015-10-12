@@ -17,6 +17,8 @@ var myPagesPrint="";
 
 
 //part to include TOC
+
+
     var ibmLength = bm.children.length;
 	//console.println("Number of bookmarks: " + bm.children.length);
 	//console.println("Number of Pages: " + Math.ceil(bm.children.length/15));
@@ -27,6 +29,8 @@ var myPagesPrint="";
 	return this.replace(/^\s+|\s+$/g,"");
 	}
 //Retrieve page header data from very first page;
+//obviously, the next section won´t fit your needs if you use a different setup of the page header.
+
 		var ckWord, numWords;
 		var k=0;
 		var l=0;
