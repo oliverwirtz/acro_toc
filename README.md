@@ -1,6 +1,7 @@
 # acro_toc
 Build a TOC from Bookmarks in Adobe Acrobat
-Save code as *js in your personal JavaScript folder.
+
+Save code as *.js in your personal JavaScript folder.
 
 MakeTOC 
 provides *.JS code to createna complete TOC including read-out of header data. The code provided on this page is not ready to use since it needs company specific changes to fit your need as well as it may not suit your PDF template at all. 
