@@ -10,4 +10,4 @@ On the other hand the code provided is setup modular, completely documented and 
 CleanBookmarks
 provides sample code to "keep" bookmarks from n+1 position only and make them root. It also deletes bookmarks starting in n+2 ad deeper.  
 
-any questions, please send me an email : oliver.wirtz@live.com
+any questions, please send me an email : oliver.wirtz(at)bayer.com
